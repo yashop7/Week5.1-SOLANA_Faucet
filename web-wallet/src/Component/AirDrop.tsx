@@ -1,5 +1,5 @@
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
+import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 
 export default function AirDrop() {
   const wallet = useWallet();
@@ -11,12 +11,15 @@ export default function AirDrop() {
       alert("No public key found");
       return;
     }
-    const inputElement = document.getElementById("publicKey") as HTMLInputElement;
+    const inputElement = document.getElementById("publicKey") as HTMLInputElement; //This is the Amount we have Inputted
     const amount = Number(inputElement.value);
     if (!amount) {
       alert("No amount found");
     }
-    await connection.requestAirdrop(publickey, amount * 1000000000);
+    // await connection.requestAirdrop(publickey, amount * 1000000000); //We are requesting the Solana BlockChain To send us some SOL
+    await connection.requestAirdrop(publickey, amount * LAMPORTS_PER_SOL); //We are requesting the Solana BlockChain To send us some SOL
+    //Use Lamports_PER_SOL
+  
     alert("AIR DROPPED YOU SOME SOL");
   }
 
