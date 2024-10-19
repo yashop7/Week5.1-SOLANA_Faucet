@@ -11,23 +11,36 @@ export default function AirDrop() {
       alert("No public key found");
       return;
     }
-    const inputElement = document.getElementById("publicKey") as HTMLInputElement; //This is the Amount we have Inputted
+
+    const inputElement = document.getElementById("publicKey") as HTMLInputElement; // Amount input field
     const amount = Number(inputElement.value);
     if (!amount) {
-      alert("No amount found");
+      alert("Please enter a valid amount");
+      return;
     }
-    // await connection.requestAirdrop(publickey, amount * 1000000000); //We are requesting the Solana BlockChain To send us some SOL
-    await connection.requestAirdrop(publickey, amount * LAMPORTS_PER_SOL); //We are requesting the Solana BlockChain To send us some SOL
-    //Use Lamports_PER_SOL
-  
-    alert("AIR DROPPED YOU SOME SOL");
+
+    try {
+      console.log("Requesting Airdrop...");
+      const signature = await connection.requestAirdrop(publickey, amount * LAMPORTS_PER_SOL);
+      console.log("Airdrop requested, signature: ", signature);
+
+      // Confirm the transaction with higher commitment level
+      const confirmation = await connection.confirmTransaction(signature, 'finalized');
+      console.log("Transaction confirmed:", confirmation);
+
+      alert("Airdropped successfully");
+    } catch (error) {
+      console.error("Airdrop failed", error);
+      // alert("Airdrop failed: " + error.message);
+    }
   }
 
   return (
     <div>
       <div>Hello from AirDROP</div>
-      <input id="publicKey" type="text" placeholder="Amount"></input>
+      <input id="publicKey" type="text" placeholder="Amount (SOL)" />
       <button onClick={airDrop}>Send AirDrop</button>
+      {publickey && <div>Your Public Key: {publickey.toBase58()}</div>}
     </div>
   );
 }

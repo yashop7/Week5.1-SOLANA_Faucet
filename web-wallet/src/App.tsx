@@ -15,6 +15,9 @@ import { clusterApiUrl } from "@solana/web3.js";
 // Default styles that can be overridden by your app
 import "@solana/wallet-adapter-react-ui/styles.css";
 import AirDrop from "./Component/AirDrop";
+import { ShowBalance } from "./Component/ShowBalance";
+import { SendTokens } from "./Component/SendToken";
+import { SignMessage } from "./Component/SignMessage";
 // import dotenv from 'dotenv';
 // dotenv.config();
 
@@ -56,7 +59,10 @@ function App() {
             <WalletDisconnectButton />
             <div>
               Hello, This is me
-              <AirDrop />
+              {/* <AirDrop /> */}
+              <ShowBalance />
+              <SendTokens />
+              <SignMessage />
             </div>
           </WalletModalProvider>
         </WalletProvider>
